@@ -9,11 +9,29 @@
   "scripts": {
     "start": "node src/server.js",
     "cli": "node bin/omni-plan.js",
-    "test": "node -c src/index.js"
+    "test": "node -c src/index.js",
+    "build": "pkg . --out-path dist",
+    "build:win": "pkg . --targets node18-win-x64 --out-path dist",
+    "build:linux": "pkg . --targets node18-linux-x64 --out-path dist",
+    "build:arm64": "pkg . --targets node18-linux-arm64 --output dist/omni-plan-arm64",
+    "build:all": "pkg . --targets node18-win-x64,node18-linux-x64,node18-linux-arm64 --out-path dist"
   },
   "author": "",
   "license": "MIT",
   "engines": {
     "node": ">=16"
+  },
+  "pkg": {
+    "scripts": [
+      "src/**/*.js"
+    ],
+    "assets": [
+      "src/web/**/*",
+      ".omni-plan/**/*"
+    ],
+    "outputPath": "dist"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
   }
 }

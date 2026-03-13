@@ -25,7 +25,8 @@ const state = {
   search: '',
   currentView: 'list',
   customOrder: {}, // 自定义排序 {taskId: orderIndex}
-  dragState: null // 当前拖拽状态
+  dragState: null, // 当前拖拽状态
+  areaOptions: JSON.parse(localStorage.getItem('areaOptions')) || ['general', 'work', 'life', 'study', 'finance', 'creativity']
 };
 
 const elements = {
