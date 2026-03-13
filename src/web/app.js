@@ -30,6 +30,8 @@ const state = {
 };
 
 const elements = {
+  layout: document.querySelector('.layout'),
+  sidebar: document.querySelector('.sidebar'),
   taskList: document.getElementById('taskList'),
   kanbanView: document.getElementById('kanbanView'),
   matrixView: document.getElementById('matrixView'),
@@ -295,6 +297,15 @@ function filterTasks(tasks) {
 function render() {
   const filtered = filterTasks(state.tasks);
   renderTabs();
+
+  // Update layout based on current view
+  if (state.currentView === 'list') {
+    elements.layout.classList.add('list-view');
+    elements.sidebar.style.display = 'none';
+  } else {
+    elements.layout.classList.remove('list-view');
+    elements.sidebar.style.display = '';
+  }
 
   elements.taskList.hidden = state.currentView !== 'list';
   elements.kanbanView.hidden = state.currentView !== 'kanban';

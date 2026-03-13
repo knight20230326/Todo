@@ -183,6 +183,11 @@ a {
   height: calc(100vh - 122px);
 }
 
+/* List view: hide sidebar and split content/detail 50-50 */
+.layout.list-view {
+  grid-template-columns: 1fr 1fr;
+}
+
 .sidebar {
   padding: 20px;
   border-right: 1px solid var(--border);
