@@ -4,7 +4,17 @@ const path = require('path');
 const { Task } = require('./models/task');
 const { readAll, writeAll, getDataPath } = require('./store');
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3030;
+// Parse command line arguments
+const args = process.argv.slice(2);
+let port = 3030;
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--port' && args[i+1]) {
+    port = Number(args[i+1]);
+    break;
+  }
+}
+
+const PORT = process.env.PORT ? Number(process.env.PORT) : port;
 const PUBLIC_DIR = path.join(__dirname, 'web');
 
 function sendJSON(res, data, status = 200) {
