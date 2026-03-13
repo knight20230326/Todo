@@ -2,7 +2,7 @@
   "name": "omni-plan",
   "version": "0.1.0",
   "description": "OmniPlan complex task management system (GTD + PARA + Agile) - CLI prototype.",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "bin": {
     "omni-plan": "bin/omni-plan.js"
   },
