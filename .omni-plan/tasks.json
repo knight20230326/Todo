@@ -1,0 +1,1110 @@
+[
+  {
+    "id": "bad3e727-92d2-42e1-90de-8bd54326372c",
+    "title": "每日站会",
+    "description": "每天上午10点的站会",
+    "createdAt": "2026-03-13T04:21:49.938Z",
+    "updatedAt": "2026-03-13T06:12:12.886Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2025-01-17T00:00:00.000Z",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "会议"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "f5aa720c-db1c-414c-a6bb-b72d718a9641",
+    "title": "等待设计评审",
+    "description": "需要等待设计团队的评审意见",
+    "createdAt": "2026-03-13T04:21:49.985Z",
+    "updatedAt": "2026-03-13T06:15:00.592Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-18",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "设计",
+        "等待"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "5bfd0f96-dbc5-4173-a201-70dc3b206e77",
+    "title": "Test Task",
+    "description": "Test",
+    "createdAt": "2026-03-13T04:22:39.056Z",
+    "updatedAt": "2026-03-13T06:21:54.326Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-19",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": []
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "0ac8fdd6-b290-4768-b8f6-f4b3c8e50655",
+    "title": "测试单次任务",
+    "description": "这是一个单次任务的测试",
+    "createdAt": "2026-03-13T04:23:59.914Z",
+    "updatedAt": "2026-03-13T07:54:50.877Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-20",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "测试",
+        "重要"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "8e330b2b-07af-4c2e-afa3-fd482dba2312",
+    "title": "每日站会",
+    "description": "每天上午10点的站会",
+    "createdAt": "2026-03-13T04:23:59.928Z",
+    "updatedAt": "2026-03-13T04:23:59.928Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2026-03-14",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "会议"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "3c663b9b-eb1a-4702-9ab6-7223f7d87070",
+    "title": "周报汇总",
+    "description": "每周五下午5点汇总本周工作",
+    "createdAt": "2026-03-13T04:23:59.934Z",
+    "updatedAt": "2026-03-13T07:56:46.955Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "urgent",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "报告"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "613e27bb-11f3-4512-abe9-fcc905668610",
+    "title": "晨间跑步",
+    "description": "每天早上跑步锻炼",
+    "createdAt": "2026-03-13T04:23:59.938Z",
+    "updatedAt": "2026-03-13T07:55:10.711Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "habit",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": "2026-03-13"
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "life",
+      "tags": [
+        "健身",
+        "习惯"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 1
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "9e16cf66-2d21-4557-b219-fc6d3d98cc81",
+    "title": "等待设计评审",
+    "description": "需要等待设计团队的评审意见",
+    "createdAt": "2026-03-13T04:23:59.943Z",
+    "updatedAt": "2026-03-13T07:49:11.777Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-18",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "设计",
+        "等待"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "等待设计师评审"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "8d93f1e5-c50b-490c-8d31-84ab3c1b468f",
+    "title": "更新的任务标题",
+    "description": "这是一个单次任务的测试",
+    "createdAt": "2026-03-13T04:29:35.430Z",
+    "updatedAt": "2026-03-13T04:29:35.451Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-20",
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "urgent",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "更新",
+        "标签"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "5792461f-d71b-4f53-9621-c74299824487",
+    "title": "每日站会",
+    "description": "每天上午10点的站会",
+    "createdAt": "2026-03-13T04:29:35.433Z",
+    "updatedAt": "2026-03-13T04:29:35.433Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2026-03-14",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "会议"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "2ca404f1-0712-4597-819a-3103178f3ad4",
+    "title": "周报汇总",
+    "description": "每周五下午5点汇总本周工作",
+    "createdAt": "2026-03-13T04:29:35.435Z",
+    "updatedAt": "2026-03-13T04:29:35.435Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "报告"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "e6c66c5a-6e08-4c97-80cb-11cf7598a2e6",
+    "title": "晨间跑步",
+    "description": "每天早上跑步锻炼",
+    "createdAt": "2026-03-13T04:29:35.437Z",
+    "updatedAt": "2026-03-13T05:42:54.848Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "habit",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": "2026-03-13"
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "life",
+      "tags": [
+        "健身",
+        "习惯"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 1
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "c09a3207-43c2-4f23-bb5c-c0071ddb244c",
+    "title": "Updated Task Title",
+    "description": "This is a test task that happens once",
+    "createdAt": "2026-03-13T05:43:23.494Z",
+    "updatedAt": "2026-03-13T05:43:23.514Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-20",
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "urgent",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "test",
+        "important"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "2df9cb89-6dc3-48fe-85ca-ebc845767883",
+    "title": "Daily Standup Meeting",
+    "description": "Morning standup",
+    "createdAt": "2026-03-13T05:43:23.497Z",
+    "updatedAt": "2026-03-13T05:43:23.516Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2026-03-14",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "meeting"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "70f286a7-52bf-4ac7-a7b2-56de68ba4b59",
+    "title": "Weekly Report",
+    "description": "Submit weekly report",
+    "createdAt": "2026-03-13T05:43:23.500Z",
+    "updatedAt": "2026-03-13T05:43:23.500Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "report"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "14dbf246-b861-46df-86f3-dbe123570f0b",
+    "title": "Morning Jog",
+    "description": "30 min run in the morning",
+    "createdAt": "2026-03-13T05:43:23.502Z",
+    "updatedAt": "2026-03-13T07:55:12.098Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "habit",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": "2026-03-13"
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "life",
+      "tags": [
+        "fitness",
+        "habit"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 1
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "85210382-c86b-46c8-b425-bdd346d4db26",
+    "title": "Waiting for Design Review",
+    "description": "Need design team approval",
+    "createdAt": "2026-03-13T05:43:23.505Z",
+    "updatedAt": "2026-03-13T05:43:23.505Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-18",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "design",
+        "blocked"
+      ]
+    },
+    "status": {
+      "phase": "wait",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "Waiting for designer feedback"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "a7b0bb13-4d45-4031-bfe4-1f6569768ad9",
+    "title": "cg",
+    "description": "sjsy",
+    "createdAt": "2026-03-13T06:05:06.433Z",
+    "updatedAt": "2026-03-13T06:06:53.403Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "condition",
+      "dueDate": "2026-03-15",
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "urgent",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": []
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "daf5de21-9c72-434d-b6ff-3c8d7f916158",
+    "title": "Updated Task Title",
+    "description": "This is a test task that happens once",
+    "createdAt": "2026-03-13T06:13:54.911Z",
+    "updatedAt": "2026-03-13T06:13:54.942Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-20",
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "urgent",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "test",
+        "important"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "2ab89a29-b253-4950-a5e4-8e9180f8f7d8",
+    "title": "Daily Standup Meeting",
+    "description": "Morning standup",
+    "createdAt": "2026-03-13T06:13:54.914Z",
+    "updatedAt": "2026-03-13T06:13:54.945Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2026-03-14",
+      "reminder": null,
+      "recurrence": "daily",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "meeting"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "bd457929-23bd-442b-bb6f-231e02672d22",
+    "title": "Weekly Report",
+    "description": "Submit weekly report",
+    "createdAt": "2026-03-13T06:13:54.917Z",
+    "updatedAt": "2026-03-13T06:13:54.917Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "recurring",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "report"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "f978be2b-9ab4-4253-92a8-6bb4779b5ae7",
+    "title": "Morning Jog",
+    "description": "30 min run in the morning",
+    "createdAt": "2026-03-13T06:13:54.920Z",
+    "updatedAt": "2026-03-13T07:55:13.054Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "habit",
+      "dueDate": "2025-01-17",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": "2026-03-13"
+    },
+    "urgency": {
+      "priority": "medium",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "life",
+      "tags": [
+        "fitness",
+        "habit"
+      ]
+    },
+    "status": {
+      "phase": "do",
+      "progress": 1
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "8c03f7d1-63bf-4fda-8962-2d2153ed31dc",
+    "title": "Waiting for Design Review",
+    "description": "Need design team approval",
+    "createdAt": "2026-03-13T06:13:54.924Z",
+    "updatedAt": "2026-03-13T06:13:54.924Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2025-01-18",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": [
+        "design",
+        "blocked"
+      ]
+    },
+    "status": {
+      "phase": "wait",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "Waiting for designer feedback"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "4876915b-6913-4550-8aac-5fe3f4fd37eb",
+    "title": "✅ 测试完成按钮",
+    "description": "",
+    "createdAt": "2026-03-13T06:14:05.586Z",
+    "updatedAt": "2026-03-13T07:53:29.599Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2026-12-31",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "study",
+      "tags": [
+        "design"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "Waiting for designer feedback"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "53fa482b-4718-4c02-88a7-cb0cc97d63ea",
+    "title": "✅ 测试完成按钮",
+    "description": "",
+    "createdAt": "2026-03-13T06:14:10.204Z",
+    "updatedAt": "2026-03-13T06:14:10.208Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2026-12-31",
+      "reminder": null,
+      "recurrence": "weekly",
+      "condition": null,
+      "habitWindow": "06:00-07:00",
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "study",
+      "tags": [
+        "design"
+      ]
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": "Waiting for designer feedback"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  }
+]

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniPlan</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🧩</div>
+      <div>
+        <h1>OmniPlan</h1>
+        <p>多维任务管理 · GTD + PARA + 敏捷</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="refreshBtn" class="btn">刷新</button>
+      <button id="newBtn" class="btn primary">新建任务</button>
+    </div>
+    <div class="view-tabs">
+      <button class="tab current" data-view="list">列表</button>
+      <button class="tab" data-view="kanban">看板</button>
+      <button class="tab" data-view="matrix">紧急矩阵</button>
+      <button class="tab" data-view="deps">依赖网络</button>
+      <button class="tab" data-view="schedule">今日建议</button>
+      <button class="tab" data-view="habit">习惯打卡</button>
+      <button class="tab" data-view="summary">汇总</button>
+      <button class="tab" data-view="history">历史</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="sidebar" aria-label="过滤和视图">
+      <div class="panel">
+        <h2>过滤</h2>
+        <div class="field">
+          <label>阶段</label>
+          <select id="filterPhase">
+            <option value="all">全部</option>
+            <option value="collect">📥 收集</option>
+            <option value="process">⚙️ 处理</option>
+            <option value="do">▶️ 执行</option>
+            <option value="wait">⏳ 等待</option>
+            <option value="review">🔍 回顾</option>
+            <option value="archive">📦 归档</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>关键字</label>
+          <input id="search" placeholder="搜索标题、标签" />
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <div id="viewContainer">
+        <div class="tasklist" id="taskList"></div>
+        <div class="kanban" id="kanbanView" hidden></div>
+        <div class="matrix" id="matrixView" hidden></div>
+        <div class="deps" id="depsView" hidden>
+          <svg id="depsSvg" width="100%" height="100%"></svg>
+        </div>
+        <div class="schedule" id="scheduleView" hidden></div>
+        <div class="habit" id="habitView" hidden></div>
+        <div class="summary" id="summaryView" hidden></div>
+        <div class="history" id="historyView" hidden></div>
+      </div>
+    </section>
+
+    <section class="rightpanel" id="taskDetail">
+      <h2>任务详情</h2>
+      <div class="detail">
+        <div><strong id="detailTitle">（选择任务）</strong></div>
+        <div class="meta" id="detailMeta"></div>
+        <div class="description" id="detailDesc"></div>
+        <div class="detail-row">
+          <button id="editBtn" class="btn">编辑</button>
+          <button id="completeBtn" class="btn success">完成</button>
+          <button id="deleteBtn" class="btn danger">删除</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modal-bg"></div>
+    <div class="modal-card">
+      <header class="modal-header">
+        <h2 id="modalTitle">新建任务</h2>
+        <button id="closeModal" class="btn icon">✕</button>
+      </header>
+      <form id="taskForm" class="modal-body">
+        <div class="field">
+          <label>任务标题 *</label>
+          <input name="title" placeholder="输入任务标题..." required />
+        </div>
+        <div class="field">
+          <label>描述 (可选)</label>
+          <textarea name="description" rows="3" placeholder="添加更多细节..."></textarea>
+        </div>
+        <div class="field">
+          <label>任务类型</label>
+          <div class="tag-selector" data-field="type">
+            <button type="button" class="tag" data-value="single">📋 单次</button>
+            <button type="button" class="tag" data-value="recurring">🔄 周期</button>
+            <button type="button" class="tag" data-value="condition">⚡ 条件触发</button>
+            <button type="button" class="tag" data-value="habit">🎯 习惯</button>
+          </div>
+          <input type="hidden" name="type" value="single" />
+        </div>
+        <div class="field">
+          <label>截止日期</label>
+          <input type="date" name="dueDate" />
+        </div>
+        <div class="field">
+          <label>重复规则</label>
+          <div class="tag-selector" data-field="recurrence">
+            <button type="button" class="tag" data-value="">无</button>
+            <button type="button" class="tag" data-value="daily">📅 每天</button>
+            <button type="button" class="tag" data-value="weekly">📆 每周</button>
+            <button type="button" class="tag" data-value="monthly">📊 每月</button>
+          </div>
+          <input type="hidden" name="recurrence" value="" />
+        </div>
+        <div class="field">
+          <label>习惯时间窗 (HH:MM-HH:MM)</label>
+          <input name="habitWindow" placeholder="07:00-09:00" />
+        </div>
+        <div class="field">
+          <label>优先级</label>
+          <div class="tag-selector" data-field="priority">
+            <button type="button" class="tag" data-value="none">无</button>
+            <button type="button" class="tag" data-value="low">🟢 低</button>
+            <button type="button" class="tag" data-value="medium">🔵 中</button>
+            <button type="button" class="tag" data-value="high">🟠 高</button>
+            <button type="button" class="tag" data-value="urgent">🔴 紧急</button>
+          </div>
+          <input type="hidden" name="priority" value="none" />
+        </div>
+        <div class="field">
+          <label>领域</label>
+          <div class="tag-selector" data-field="area">
+            <button type="button" class="tag" data-value="general">通用</button>
+            <button type="button" class="tag" data-value="work">💼 工作</button>
+            <button type="button" class="tag" data-value="life">🏠 生活</button>
+            <button type="button" class="tag" data-value="study">📚 学习</button>
+            <button type="button" class="tag" data-value="finance">💰 财务</button>
+            <button type="button" class="tag" data-value="creativity">🎨 创作</button>
+          </div>
+          <input type="hidden" name="area" value="general" />
+        </div>
+        <div class="field">
+          <label>标签 (逗号分隔)</label>
+          <input name="tags" placeholder="例如: 紧急的, 需反馈" />
+        </div>
+        <div class="field">
+          <label>阶段</label>
+          <div class="tag-selector" data-field="phase">
+            <button type="button" class="tag" data-value="collect">📥 收集</button>
+            <button type="button" class="tag" data-value="process">🔄 处理</button>
+            <button type="button" class="tag" data-value="do">⚡ 执行</button>
+            <button type="button" class="tag" data-value="wait">⏳ 等待</button>
+            <button type="button" class="tag" data-value="review">📋 回顾</button>
+            <button type="button" class="tag" data-value="archive">📦 归档</button>
+          </div>
+          <input type="hidden" name="phase" value="collect" />
+        </div>
+        <div class="field">
+          <label>进度 (%) [可选]</label>
+          <input name="progress" type="number" min="0" max="100" value="0" />
+        </div>
+        <div class="field">
+          <label>阻塞原因 (如有)</label>
+          <input name="blocked" placeholder="例: 等设计师评审" />
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn primary">保存</button>
+          <button type="button" id="cancelBtn" class="btn">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

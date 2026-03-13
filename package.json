@@ -1,0 +1,19 @@
+{
+  "name": "omni-plan",
+  "version": "0.1.0",
+  "description": "OmniPlan complex task management system (GTD + PARA + Agile) - CLI prototype.",
+  "main": "src/index.js",
+  "bin": {
+    "omni-plan": "bin/omni-plan.js"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "cli": "node bin/omni-plan.js",
+    "test": "node -c src/index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  }
+}
