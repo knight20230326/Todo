@@ -224,14 +224,14 @@
     "title": "周报汇总",
     "description": "每周五下午5点汇总本周工作",
     "createdAt": "2026-03-13T04:23:59.934Z",
-    "updatedAt": "2026-03-13T07:56:46.955Z",
+    "updatedAt": "2026-03-13T08:58:55.511Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2025-01-17",
+      "dueDate": "2025-03-07T00:00:00.000Z",
       "reminder": null,
       "recurrence": "weekly",
       "condition": null,
@@ -403,14 +403,14 @@
     "title": "每日站会",
     "description": "每天上午10点的站会",
     "createdAt": "2026-03-13T04:29:35.433Z",
-    "updatedAt": "2026-03-13T04:29:35.433Z",
+    "updatedAt": "2026-03-13T08:11:12.740Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2026-03-14",
+      "dueDate": "2026-03-15T00:00:00.000Z",
       "reminder": null,
       "recurrence": "daily",
       "condition": null,
@@ -669,7 +669,7 @@
     "title": "Morning Jog",
     "description": "30 min run in the morning",
     "createdAt": "2026-03-13T05:43:23.502Z",
-    "updatedAt": "2026-03-13T07:55:12.098Z",
+    "updatedAt": "2026-03-13T08:11:00.348Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -846,14 +846,14 @@
     "title": "Daily Standup Meeting",
     "description": "Morning standup",
     "createdAt": "2026-03-13T06:13:54.914Z",
-    "updatedAt": "2026-03-13T06:13:54.945Z",
+    "updatedAt": "2026-03-13T08:11:29.200Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2026-03-14",
+      "dueDate": "2026-03-16T00:00:00.000Z",
       "reminder": null,
       "recurrence": "daily",
       "condition": null,
@@ -890,14 +890,14 @@
     "title": "Weekly Report",
     "description": "Submit weekly report",
     "createdAt": "2026-03-13T06:13:54.917Z",
-    "updatedAt": "2026-03-13T06:13:54.917Z",
+    "updatedAt": "2026-03-13T08:11:06.052Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2025-01-17",
+      "dueDate": "2025-01-24T00:00:00.000Z",
       "reminder": null,
       "recurrence": "weekly",
       "condition": null,
@@ -979,7 +979,7 @@
     "title": "Waiting for Design Review",
     "description": "Need design team approval",
     "createdAt": "2026-03-13T06:13:54.924Z",
-    "updatedAt": "2026-03-13T06:13:54.924Z",
+    "updatedAt": "2026-03-13T08:10:49.979Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -1005,8 +1005,8 @@
       ]
     },
     "status": {
-      "phase": "wait",
-      "progress": 0
+      "phase": "archive",
+      "progress": 100
     },
     "resources": {
       "budget": null,
@@ -1100,6 +1100,90 @@
       "budget": null,
       "checklist": [],
       "blockedReason": "Waiting for designer feedback"
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "1cf48f94-5ebf-4380-85f5-c9cb0d2ad5a1",
+    "title": "测试完成",
+    "description": "测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完\n\n成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试\n完成测试完成测试完成测试完成测试\n\n完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成测试完成",
+    "createdAt": "2026-03-13T08:14:22.800Z",
+    "updatedAt": "2026-03-13T08:15:23.480Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": "2026-03-15",
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "high",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": []
+    },
+    "status": {
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "90e85182-33f5-4f2d-a949-d7b312a9eb07",
+    "title": "采购",
+    "description": "",
+    "createdAt": "2026-03-13T09:03:05.069Z",
+    "updatedAt": "2026-03-13T09:03:05.069Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": null,
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "none",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "work",
+      "tags": []
+    },
+    "status": {
+      "phase": "do",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
     },
     "content": {
       "draftMode": "outline",

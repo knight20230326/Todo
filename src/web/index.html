@@ -49,7 +49,10 @@
         </div>
         <div class="field">
           <label>关键字</label>
-          <input id="search" placeholder="搜索标题、标签" />
+          <input id="search" placeholder="搜索标题、标签、领域" />
+        </div>
+        <div class="field">
+          <button id="manageAreasBtn" class="btn" style="width: 100%;">⚙️ 管理领域</button>
         </div>
       </div>
     </section>
@@ -180,6 +183,30 @@
           <button type="button" id="cancelBtn" class="btn">取消</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Area Management Modal -->
+  <div id="areaModal" class="modal" hidden>
+    <div class="modal-bg"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="areaModalTitle">管理领域</h2>
+        <button id="closeAreaModal" class="btn close">✕</button>
+      </div>
+      <div id="areaModalBody">
+        <div class="field">
+          <label>新增领域</label>
+          <div style="display: flex; gap: 8px;">
+            <input id="newAreaInput" placeholder="输入新领域名称" style="flex: 1;" />
+            <button id="addAreaBtn" class="btn primary">添加</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>现有领域</label>
+          <div id="areaList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;"></div>
+        </div>
+      </div>
     </div>
   </div>
 

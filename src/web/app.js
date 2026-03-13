@@ -57,7 +57,14 @@ const elements = {
   detailDesc: document.getElementById('detailDesc'),
   editBtn: document.getElementById('editBtn'),
   completeBtn: document.getElementById('completeBtn'),
-  deleteBtn: document.getElementById('deleteBtn')
+  deleteBtn: document.getElementById('deleteBtn'),
+  manageAreasBtn: document.getElementById('manageAreasBtn'),
+  areaModal: document.getElementById('areaModal'),
+  closeAreaModal: document.getElementById('closeAreaModal'),
+  areaModalBody: document.getElementById('areaModalBody'),
+  newAreaInput: document.getElementById('newAreaInput'),
+  addAreaBtn: document.getElementById('addAreaBtn'),
+  areaList: document.getElementById('areaList')
 };
 
 function formatDate(value) {
@@ -108,6 +115,95 @@ function translateLabel(key, value) {
   };
   
   return translations[key]?.[value] || value;
+}
+
+// 领域管理函数
+function saveAreaOptions() {
+  localStorage.setItem('areaOptions', JSON.stringify(state.areaOptions));
+  // 同时更新翻译
+  updateAreaTranslations();
+}
+
+function updateAreaTranslations() {
+  // 动态构建area翻译对象
+  const areaTranslations = {};
+  state.areaOptions.forEach(area => {
+    areaTranslations[area] = area; // 直接使用名称，如果需要emoji可以在这里添加
+  });
+  // 注意: 这里不修改全局translations对象，而是在renderTaskCard等地方直接使用area名称
+}
+
+function openAreaModal() {
+  elements.areaModal.hidden = false;
+  renderAreaModal();
+}
+
+function closeAreaModal() {
+  elements.areaModal.hidden = true;
+  elements.newAreaInput.value = '';
+}
+
+function renderAreaModal() {
+  elements.areaList.innerHTML = '';
+  state.areaOptions.forEach(area => {
+    const item = document.createElement('div');
+    item.style.cssText = 'display: flex; gap: 8px; padding: 8px; background: #f5f5f5; border-radius: 4px; align-items: center;';
+    
+    const label = document.createElement('span');
+    label.textContent = area;
+    label.style.flex = '1';
+    item.appendChild(label);
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '删除';
+    deleteBtn.className = 'btn';
+    deleteBtn.style.padding = '4px 8px';
+    deleteBtn.addEventListener('click', () => {
+      if (confirm(`确认删除领域"${area}"？`)) {
+        removeArea(area);
+      }
+    });
+    item.appendChild(deleteBtn);
+    
+    elements.areaList.appendChild(item);
+  });
+}
+
+function removeArea(area) {
+  state.areaOptions = state.areaOptions.filter(a => a !== area);
+  saveAreaOptions();
+  renderAreaModal();
+  updateAreaTagSelector();
+  render(); // 重新渲染以更新任务显示
+}
+
+function updateAreaTagSelector() {
+  // 更新task form中的领域tag selector
+  const areaSelector = elements.taskForm.querySelector('[data-field="area"]');
+  if (!areaSelector) return;
+  
+  // 保存当前选中值
+  const currentValue = elements.taskForm.querySelector('input[name="area"]')?.value || 'general';
+  
+  // 清空并重新生成按钮
+  const existingButtons = areaSelector.querySelectorAll('.tag');
+  existingButtons.forEach(btn => btn.remove());
+  
+  state.areaOptions.forEach(area => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tag';
+    btn.dataset.value = area;
+    btn.textContent = area;
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      selectTagInSelector(areaSelector, area);
+    });
+    areaSelector.appendChild(btn);
+  });
+  
+  // 恢复选中状态
+  selectTagInSelector(areaSelector, currentValue);
 }
 
 // Drag and Drop Functions
@@ -289,7 +385,15 @@ function filterTasks(tasks) {
     if (phase === 'all' && t.status?.phase === 'archive') return false;
     if (phase !== 'all' && t.status?.phase !== phase) return false;
     if (!search) return true;
-    const text = `${t.title} ${t.description} ${(t.category?.tags || []).join(' ')}`.toLowerCase();
+    
+    // 搜索：标题、描述、标签、领域、优先级
+    const title = t.title || '';
+    const description = t.description || '';
+    const tags = (t.category?.tags || []).join(' ');
+    const area = t.category?.area || '';
+    const priority = t.urgency?.priority || '';
+    const text = `${title} ${description} ${tags} ${area} ${priority}`.toLowerCase();
+    
     return text.includes(search);
   });
 }
@@ -1066,6 +1170,9 @@ function openModal(task = null) {
   const form = elements.taskForm;
   form.reset();
 
+  // 更新领域选项
+  updateAreaTagSelector();
+
   // Initialize tag selectors
   const tagSelectors = form.querySelectorAll('.tag-selector');
   tagSelectors.forEach((selector) => {
@@ -1270,6 +1377,34 @@ function init() {
         loadTasks();
       })
       .catch(() => alert('删除失败'));
+  });
+
+  // 领域管理相关事件
+  elements.manageAreasBtn.addEventListener('click', () => openAreaModal());
+  elements.closeAreaModal.addEventListener('click', closeAreaModal);
+  
+  // Area modal background click
+  const areaModalBg = elements.areaModal.querySelector('.modal-bg');
+  if (areaModalBg) {
+    areaModalBg.addEventListener('click', closeAreaModal);
+  }
+  
+  // Add area button
+  elements.addAreaBtn.addEventListener('click', () => {
+    const areaName = elements.newAreaInput.value.trim();
+    if (!areaName) {
+      alert('请输入领域名称');
+      return;
+    }
+    if (state.areaOptions.includes(areaName)) {
+      alert('该领域已存在');
+      return;
+    }
+    state.areaOptions.push(areaName);
+    saveAreaOptions();
+    elements.newAreaInput.value = '';
+    renderAreaModal();
+    updateAreaTagSelector();
   });
 
   // 初始化拖拽功能
