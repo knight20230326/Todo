@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { Task } = require('./models/task');
-const { readAll, writeAll, getDataPath } = require('./store');
+const { readAll, writeAll, getDataPath, readOrder, writeOrder } = require('./store');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -64,6 +64,22 @@ function handleApi(req, res) {
   if (pathname === '/api/tasks' && req.method === 'GET') {
     const tasks = readAll();
     sendJSON(res, tasks);
+    return;
+  }
+
+  if (pathname === '/api/order' && req.method === 'GET') {
+    const order = readOrder();
+    sendJSON(res, order);
+    return;
+  }
+
+  if (pathname === '/api/order' && req.method === 'POST') {
+    parseJSON(req)
+      .then((payload) => {
+        writeOrder(payload);
+        sendJSON(res, { ok: true });
+      })
+      .catch(() => sendJSON(res, { error: 'invalid json body' }, 400));
     return;
   }
 

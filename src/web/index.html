@@ -10,30 +10,28 @@
   <header class="topbar">
     <div class="brand">
       <div class="logo">🧩</div>
-      <div>
+      <div class="brand-text">
         <h1>OmniPlan</h1>
         <p>多维任务管理 · GTD + PARA + 敏捷</p>
       </div>
     </div>
     <div class="actions">
+      <button id="themeToggle" class="btn" title="切换主题">🌙</button>
       <button id="refreshBtn" class="btn">刷新</button>
       <button id="manageAreasBtn" class="btn">⚙️ 管理领域</button>
       <button id="newBtn" class="btn primary">新建任务</button>
     </div>
-    <div class="search-container">
-      <input id="search" placeholder="搜索任务内容（标题、描述、标签、领域、优先级等）" />
-    </div>
-    <div class="view-tabs">
-      <button class="tab current" data-view="list">列表</button>
-      <button class="tab" data-view="kanban">看板</button>
-      <button class="tab" data-view="matrix">紧急矩阵</button>
-      <button class="tab" data-view="deps">依赖网络</button>
-      <button class="tab" data-view="schedule">今日建议</button>
-      <button class="tab" data-view="habit">习惯打卡</button>
-      <button class="tab" data-view="summary">汇总</button>
-      <button class="tab" data-view="history">历史</button>
-    </div>
   </header>
+  <div class="view-tabs">
+    <button class="tab" data-view="list">列表</button>
+    <button class="tab" data-view="kanban">看板</button>
+    <button class="tab" data-view="matrix">紧急矩阵</button>
+    <button class="tab" data-view="deps">依赖网络</button>
+    <button class="tab current" data-view="schedule">今日建议</button>
+    <button class="tab" data-view="habit">习惯打卡</button>
+    <button class="tab" data-view="summary">汇总</button>
+    <button class="tab" data-view="history">历史</button>
+  </div>
 
   <main class="layout">
     <section class="sidebar" aria-label="过滤和视图">
@@ -52,17 +50,16 @@
           </select>
         </div>
         <div class="field">
-          <label>关键字</label>
-          <input id="search" placeholder="搜索标题、标签、领域" />
-        </div>
-        <div class="field">
-          <button id="manageAreasBtn" class="btn" style="width: 100%;">⚙️ 管理领域</button>
+          <button id="manageAreasBtnSidebar" class="btn" style="width: 100%;">⚙️ 管理领域</button>
         </div>
       </div>
     </section>
 
-    <section class="content">
+    <section class="content" id="taskListPanel">
       <div id="viewContainer">
+        <div class="search-container" style="margin-bottom: 16px;">
+          <input id="search" placeholder="搜索任务内容（标题、描述、标签、领域、优先级等）" />
+        </div>
         <div class="tasklist" id="taskList"></div>
         <div class="kanban" id="kanbanView" hidden></div>
         <div class="matrix" id="matrixView" hidden></div>
@@ -76,12 +73,15 @@
       </div>
     </section>
 
+    <div class="resizer" id="resizer"></div>
+
     <section class="rightpanel" id="taskDetail">
       <h2>任务详情</h2>
       <div class="detail">
         <div><strong id="detailTitle">（选择任务）</strong></div>
         <div class="meta" id="detailMeta"></div>
         <div class="description" id="detailDesc"></div>
+        <button class="description-toggle" id="descToggle" hidden>展开更多</button>
         <div class="detail-row">
           <button id="editBtn" class="btn">编辑</button>
           <button id="completeBtn" class="btn success">完成</button>
@@ -190,15 +190,14 @@
     </div>
   </div>
 
-  <!-- Area Management Modal -->
-  <div id="areaModal" class="modal" hidden>
+  <div class="modal" id="areaModal" hidden>
     <div class="modal-bg"></div>
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-card">
+      <header class="modal-header">
         <h2 id="areaModalTitle">管理领域</h2>
-        <button id="closeAreaModal" class="btn close">✕</button>
-      </div>
-      <div id="areaModalBody">
+        <button id="closeAreaModal" class="btn icon">✕</button>
+      </header>
+      <div class="modal-body">
         <div class="field">
           <label>新增领域</label>
           <div style="display: flex; gap: 8px;">

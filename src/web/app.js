@@ -15,7 +15,14 @@ const api = {
   delete: (id) =>
     fetch(`/api/tasks/${id}`, {
       method: 'DELETE'
-    }).then((r) => r.json())
+    }).then((r) => r.json()),
+  getOrder: () => fetch('/api/order').then((r) => r.json()).catch(() => ({})),
+  saveOrder: (order) =>
+    fetch('/api/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order)
+    }).then((r) => r.json()).catch(() => ({ ok: false }))
 };
 
 const state = {
@@ -23,7 +30,7 @@ const state = {
   selected: null,
   filterPhase: 'all',
   search: '',
-  currentView: 'list',
+  currentView: 'schedule',
   customOrder: {}, // 自定义排序 {taskId: orderIndex}
   dragState: null, // 当前拖拽状态
   areaOptions: JSON.parse(localStorage.getItem('areaOptions')) || ['general', 'work', 'life', 'study', 'finance', 'creativity']
@@ -59,6 +66,12 @@ const elements = {
   completeBtn: document.getElementById('completeBtn'),
   deleteBtn: document.getElementById('deleteBtn'),
   manageAreasBtn: document.getElementById('manageAreasBtn'),
+  manageAreasBtnSidebar: document.getElementById('manageAreasBtnSidebar'),
+  themeToggle: document.getElementById('themeToggle'),
+  descToggle: document.getElementById('descToggle'),
+  resizer: document.getElementById('resizer'),
+  taskListPanel: document.getElementById('taskListPanel'),
+  taskDetail: document.getElementById('taskDetail'),
   areaModal: document.getElementById('areaModal'),
   closeAreaModal: document.getElementById('closeAreaModal'),
   areaModalBody: document.getElementById('areaModalBody'),
@@ -147,11 +160,12 @@ function renderAreaModal() {
   elements.areaList.innerHTML = '';
   state.areaOptions.forEach(area => {
     const item = document.createElement('div');
-    item.style.cssText = 'display: flex; gap: 8px; padding: 8px; background: #f5f5f5; border-radius: 4px; align-items: center;';
+    item.style.cssText = 'display: flex; gap: 8px; padding: 8px; background: var(--bg-tertiary); border-radius: 4px; align-items: center; border: 1px solid var(--border);';
     
     const label = document.createElement('span');
     label.textContent = area;
     label.style.flex = '1';
+    label.style.color = 'var(--text)';
     item.appendChild(label);
     
     const deleteBtn = document.createElement('button');
@@ -242,8 +256,17 @@ function updateCustomOrder(draggedId, targetId) {
   
   console.log('更新排序后:', state.customOrder);
   
-  // 保存到localStorage
+  // 保存到localStorage (本地备份)
   localStorage.setItem('omniplan-custom-order', JSON.stringify(state.customOrder));
+  
+  // 保存到服务器 (跨浏览器同步)
+  api.saveOrder(state.customOrder).then((result) => {
+    if (result.ok) {
+      console.log('排序已保存到服务器');
+    } else {
+      console.warn('保存排序到服务器失败');
+    }
+  });
 }
 
 function getCurrentViewTasks() {
@@ -251,14 +274,32 @@ function getCurrentViewTasks() {
   return sortTasksWithCustomOrder(filtered);
 }
 
-function loadCustomOrder() {
+async function loadCustomOrder() {
   try {
-    const saved = localStorage.getItem('omniplan-custom-order');
-    if (saved) {
-      state.customOrder = JSON.parse(saved);
+    // Try to load from server first
+    const serverOrder = await api.getOrder();
+    if (serverOrder && Object.keys(serverOrder).length > 0) {
+      state.customOrder = serverOrder;
+      // Also save to localStorage as backup
+      localStorage.setItem('omniplan-custom-order', JSON.stringify(serverOrder));
+    } else {
+      // Fallback to localStorage
+      const saved = localStorage.getItem('omniplan-custom-order');
+      if (saved) {
+        state.customOrder = JSON.parse(saved);
+      }
     }
   } catch (e) {
     console.warn('Failed to load custom order:', e);
+    // Fallback to localStorage
+    try {
+      const saved = localStorage.getItem('omniplan-custom-order');
+      if (saved) {
+        state.customOrder = JSON.parse(saved);
+      }
+    } catch (e2) {
+      console.warn('Failed to load from localStorage:', e2);
+    }
   }
 }
 
@@ -688,7 +729,7 @@ function createCompletionUpdate(task) {
     const streak = isYesterday ? (task.status?.progress || 0) + 1 : 1;
     return {
       time: { ...task.time, lastDone: todayKey },
-      status: { ...task.status, phase: 'do', progress: streak }
+      status: { ...task.status, phase: 'archive', progress: 100 }
     };
   }
 
@@ -711,7 +752,7 @@ function createCompletionUpdate(task) {
     }
     return {
       time: { ...task.time, dueDate: next ? next.toISOString() : task.time.dueDate },
-      status: { ...task.status, phase: 'do', progress: 0 }
+      status: { ...task.status, phase: 'archive', progress: 100 }
     };
   }
 
@@ -1132,9 +1173,26 @@ function renderDetail() {
   const task = state.selected;
   elements.detailTitle.textContent = task ? (task.title || '(无标题)') : '（选择任务）';
   elements.detailMeta.innerHTML = '';
-  elements.detailDesc.textContent = task ? (task.description || '（无描述）') : '';
   
-  if (!task) return;
+  // Reset description toggle - default expanded
+  elements.detailDesc.classList.remove('collapsed');
+  elements.descToggle.hidden = true;
+  elements.descToggle.textContent = '收起';
+  
+  if (!task) {
+    elements.detailDesc.textContent = '';
+    return;
+  }
+  
+  const description = task.description || '（无描述）';
+  elements.detailDesc.textContent = description;
+  
+  // Check if description is long enough to need toggle
+  const lineCount = description.split('\n').length;
+  const charCount = description.length;
+  if (lineCount > 5 || charCount > 200) {
+    elements.descToggle.hidden = false;
+  }
 
   elements.detailMeta.appendChild(renderBadge(translateLabel('priority', task.urgency?.priority || 'none'), task.urgency?.priority));
   elements.detailMeta.appendChild(renderBadge(translateLabel('phase', task.status?.phase || 'collect'), task.status?.phase));
@@ -1286,6 +1344,26 @@ function buildTaskPayload(formElement) {
 }
 
 function init() {
+  // Theme toggle
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    elements.themeToggle.textContent = '☀️';
+  }
+  
+  elements.themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    if (currentTheme === 'light') {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'dark');
+      elements.themeToggle.textContent = '🌙';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+      elements.themeToggle.textContent = '☀️';
+    }
+  });
+
   elements.refreshBtn.addEventListener('click', () => loadTasks());
   elements.newBtn.addEventListener('click', () => openModal());
   elements.closeModal.addEventListener('click', closeModal);
@@ -1379,8 +1457,67 @@ function init() {
       .catch(() => alert('删除失败'));
   });
 
+  // Description toggle
+  elements.descToggle.addEventListener('click', () => {
+    const isCollapsed = elements.detailDesc.classList.contains('collapsed');
+    if (isCollapsed) {
+      elements.detailDesc.classList.remove('collapsed');
+      elements.descToggle.textContent = '收起';
+    } else {
+      elements.detailDesc.classList.add('collapsed');
+      elements.descToggle.textContent = '展开更多';
+    }
+  });
+
+  // Resizer drag functionality
+  let isResizing = false;
+
+  elements.resizer.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    elements.resizer.classList.add('resizing');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    const containerRect = elements.taskListPanel.parentElement.getBoundingClientRect();
+    const sidebarWidth = 200;
+    const resizerWidth = 6;
+    const minDetailWidth = 400;
+    const maxListWidth = 800;
+    const minListWidth = 300;
+    
+    // Calculate available width for content + detail
+    const availableWidth = containerRect.width - sidebarWidth - resizerWidth;
+    
+    // Calculate new list width based on mouse position
+    let newListWidth = e.clientX - containerRect.left - sidebarWidth;
+    
+    // Constrain list width
+    newListWidth = Math.max(minListWidth, Math.min(maxListWidth, newListWidth));
+    
+    // Ensure detail panel doesn't get too small
+    const detailWidth = availableWidth - newListWidth;
+    if (detailWidth < minDetailWidth) {
+      newListWidth = availableWidth - minDetailWidth;
+    }
+    
+    elements.taskListPanel.style.flex = '0 0 ' + newListWidth + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      elements.resizer.classList.remove('resizing');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+
   // 领域管理相关事件
   elements.manageAreasBtn.addEventListener('click', () => openAreaModal());
+  elements.manageAreasBtnSidebar.addEventListener('click', () => openAreaModal());
   elements.closeAreaModal.addEventListener('click', closeAreaModal);
   
   // Area modal background click
@@ -1409,9 +1546,11 @@ function init() {
 
   // 初始化拖拽功能
   initDragAndDrop();
-  loadCustomOrder();
-
-  loadTasks();
+  
+  // 加载自定义排序（支持跨浏览器同步）
+  loadCustomOrder().then(() => {
+    loadTasks();
+  });
 }
 
 window.addEventListener('DOMContentLoaded', init);
