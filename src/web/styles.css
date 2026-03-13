@@ -32,12 +32,19 @@ a {
 /* Top Bar */
 .topbar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 24px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-secondary);
   box-shadow: 0 1px 3px var(--shadow);
+}
+
+.topbar > * {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .brand {
@@ -73,6 +80,32 @@ a {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.search-container {
+  width: 100%;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.search-container input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.search-container input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
 }
 
 /* Buttons */
@@ -657,7 +690,7 @@ a {
   display: grid;
   place-items: center;
   padding: 24px;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .modal[hidden] {
@@ -665,12 +698,13 @@ a {
 }
 
 .modal-bg {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(10px);
   cursor: pointer;
   transition: background 0.15s ease;
+  z-index: 999;
 }
 
 .modal:not([hidden]) .modal-bg:hover {
@@ -679,6 +713,7 @@ a {
 
 .modal-card {
   position: relative;
+  z-index: 1001;
   width: min(600px, 100%);
   background: white;
   border: 1px solid #eee;
