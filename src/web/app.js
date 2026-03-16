@@ -584,14 +584,22 @@ function renderTodoView(tasks) {
     empty.className = 'todo-empty';
     empty.textContent = '暂无 TODO 标记。在任务描述中使用 "TODO: xxx" 格式添加。';
     elements.todoList.appendChild(empty);
+    // Remove has-content class when no todos
+    elements.todoDetail.classList.remove('has-content');
     return;
   }
+  
+  // Add has-content class when there are todos
+  elements.todoDetail.classList.add('has-content');
   
   todos.forEach((todo) => {
     const item = document.createElement('div');
     item.className = 'todo-item';
     const richText = parseMarkdown(todo.text);
-    item.innerHTML = `<div class="todo-text">${richText}</div>`;
+    item.innerHTML = `
+      <span class="todo-task-title">${escapeHtml(todo.taskTitle || '无标题')}</span>
+      <div class="todo-text">${richText}</div>
+    `;
     item.addEventListener('click', () => {
       const task = tasks.find(t => t.id === todo.id);
       if (task) {

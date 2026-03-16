@@ -716,21 +716,19 @@ a {
 
 .todo-layout {
   display: flex;
-  gap: 16px;
   height: 100%;
 }
 
 .todo-list {
-  width: 40%;
-  min-width: 280px;
-  max-width: 400px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   overflow-y: auto;
   padding-right: 8px;
   border-right: 1px solid var(--border);
-  padding-right: 16px;
 }
 
 .todo-list::-webkit-scrollbar {
@@ -791,6 +789,10 @@ a {
   color: var(--text-tertiary);
   text-align: center;
   padding: 40px;
+}
+
+.todo-detail.has-content {
+  display: none;
 }
 
 .todo-empty {
