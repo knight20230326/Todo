@@ -24,6 +24,7 @@
   </header>
   <div class="view-tabs">
     <button class="tab" data-view="list">列表</button>
+    <button class="tab" data-view="todo">TODO列表</button>
     <button class="tab" data-view="kanban">看板</button>
     <button class="tab" data-view="matrix">紧急矩阵</button>
     <button class="tab" data-view="deps">依赖网络</button>
@@ -61,6 +62,14 @@
           <input id="search" placeholder="搜索任务内容（标题、描述、标签、领域、优先级等）" />
         </div>
         <div class="tasklist" id="taskList"></div>
+        <div class="todo-view" id="todoView" hidden>
+          <div class="todo-layout">
+            <div class="todo-list" id="todoList"></div>
+            <div class="todo-detail" id="todoDetail">
+              <p class="placeholder">点击左侧 TODO 条目查看关联任务</p>
+            </div>
+          </div>
+        </div>
         <div class="kanban" id="kanbanView" hidden></div>
         <div class="matrix" id="matrixView" hidden></div>
         <div class="deps" id="depsView" hidden>

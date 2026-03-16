@@ -45,6 +45,9 @@ const elements = {
   depsView: document.getElementById('depsView'),
   depsSvg: document.getElementById('depsSvg'),
   scheduleView: document.getElementById('scheduleView'),
+  todoView: document.getElementById('todoView'),
+  todoList: document.getElementById('todoList'),
+  todoDetail: document.getElementById('todoDetail'),
   habitView: document.getElementById('habitView'),
   summaryView: document.getElementById('summaryView'),
   historyView: document.getElementById('historyView'),
@@ -497,6 +500,7 @@ function render() {
   }
 
   elements.taskList.hidden = state.currentView !== 'list';
+  elements.todoView.hidden = state.currentView !== 'todo';
   elements.kanbanView.hidden = state.currentView !== 'kanban';
   elements.matrixView.hidden = state.currentView !== 'matrix';
   elements.depsView.hidden = state.currentView !== 'deps';
@@ -506,6 +510,7 @@ function render() {
   elements.historyView.hidden = state.currentView !== 'history';
 
   renderListView(filtered);
+  renderTodoView(filtered);
   renderKanbanView(filtered);
   renderMatrixView(filtered);
   renderDepsView(filtered);
@@ -538,6 +543,65 @@ function renderListView(filtered) {
   
   sortedTasks.forEach((task) => {
     elements.taskList.appendChild(renderTaskCard(task));
+  });
+}
+
+function extractTodos(tasks) {
+  const todos = [];
+  
+  tasks.forEach((task) => {
+    if (!task.description) return;
+    
+    // Split by HTML block elements to get individual lines/paragraphs
+    const lines = task.description.split(/<\/(?:p|div|li|h[1-6]|blockquote|pre)>/i);
+    
+    lines.forEach((line) => {
+      // Create a temp element to decode HTML entities
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = line;
+      const plainText = tempDiv.textContent || tempDiv.innerText || '';
+      
+      if (plainText.toUpperCase().includes('TODO')) {
+        todos.push({
+          id: task.id,
+          taskTitle: task.title,
+          text: plainText.trim()
+        });
+      }
+    });
+  });
+  
+  return todos;
+}
+
+function renderTodoView(tasks) {
+  elements.todoList.innerHTML = '';
+  
+  const todos = extractTodos(tasks);
+  
+  if (todos.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'todo-empty';
+    empty.textContent = '暂无 TODO 标记。在任务描述中使用 "TODO: xxx" 格式添加。';
+    elements.todoList.appendChild(empty);
+    return;
+  }
+  
+  todos.forEach((todo) => {
+    const item = document.createElement('div');
+    item.className = 'todo-item';
+    const richText = parseMarkdown(todo.text);
+    item.innerHTML = `<div class="todo-text">${richText}</div>`;
+    item.addEventListener('click', () => {
+      const task = tasks.find(t => t.id === todo.id);
+      if (task) {
+        state.selected = task;
+        renderDetail();
+        elements.todoList.querySelectorAll('.todo-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+      }
+    });
+    elements.todoList.appendChild(item);
   });
 }
 
