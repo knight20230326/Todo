@@ -105,7 +105,26 @@
         </div>
         <div class="field">
           <label>描述 (可选)</label>
-          <textarea name="description" rows="3" placeholder="添加更多细节..."></textarea>
+          <div class="rich-editor">
+            <div class="rich-toolbar">
+              <button type="button" data-cmd="bold" title="加粗"><b>B</b></button>
+              <button type="button" data-cmd="italic" title="斜体"><i>I</i></button>
+              <button type="button" data-cmd="strikeThrough" title="删除线"><s>S</s></button>
+              <span class="separator"></span>
+              <button type="button" data-cmd="foreColor" data-value="#ff4444" title="红色" style="color:#ff4444">A</button>
+              <button type="button" data-cmd="foreColor" data-value="#44ff44" title="绿色" style="color:#44ff44">A</button>
+              <button type="button" data-cmd="foreColor" data-value="#4444ff" title="蓝色" style="color:#4444ff">A</button>
+              <span class="separator"></span>
+              <button type="button" data-cmd="insertUnorderedList" title="无序列表">• 列表</button>
+              <button type="button" data-cmd="insertOrderedList" title="有序列表">1. 列表</button>
+              <span class="separator"></span>
+              <button type="button" data-cmd="insertTable" title="插入表格">表格</button>
+              <button type="button" data-cmd="insertCode" title="代码块">代码</button>
+              <button type="button" data-cmd="createLink" title="插入链接">链接</button>
+            </div>
+            <div class="rich-content" contenteditable="true" placeholder="添加更多细节..."></div>
+            <input type="hidden" name="description" />
+          </div>
         </div>
         <div class="field">
           <label>任务类型</label>

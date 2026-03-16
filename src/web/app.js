@@ -221,6 +221,50 @@ function updateAreaTagSelector() {
 }
 
 // Drag and Drop Functions
+// Simple Markdown parser for rich text display
+function parseMarkdown(text) {
+  if (!text) return '';
+  
+  let html = text
+    // Escape HTML
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    // Headers
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    // Bold and Italic
+    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/__(.*?)__/g, '<strong>$1</strong>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    // Code blocks
+    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+    // Inline code
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // Links
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+    // Images
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">')
+    // Blockquotes
+    .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+    // Unordered lists
+    .replace(/^\s*[-*+] (.*$)/gim, '<li>$1</li>')
+    // Ordered lists
+    .replace(/^\s*\d+\. (.*$)/gim, '<li>$1</li>')
+    // Horizontal rule
+    .replace(/^---+$/gim, '<hr>')
+    // Line breaks
+    .replace(/\n/g, '<br>');
+  
+  // Wrap consecutive li elements in ul
+  html = html.replace(/(<li>.*<\/li>)(<br>)*\1/g, '<ul>$1</ul>$1');
+  
+  return html;
+}
+
 function initDragAndDrop() {
   // 拖拽事件现在在renderTaskCard中添加
 }
@@ -1174,24 +1218,20 @@ function renderDetail() {
   elements.detailTitle.textContent = task ? (task.title || '(无标题)') : '（选择任务）';
   elements.detailMeta.innerHTML = '';
   
-  // Reset description toggle - default expanded
-  elements.detailDesc.classList.remove('collapsed');
+  // Hide toggle button for rich text
   elements.descToggle.hidden = true;
-  elements.descToggle.textContent = '收起';
   
   if (!task) {
-    elements.detailDesc.textContent = '';
+    elements.detailDesc.innerHTML = '';
     return;
   }
   
   const description = task.description || '（无描述）';
-  elements.detailDesc.textContent = description;
-  
-  // Check if description is long enough to need toggle
-  const lineCount = description.split('\n').length;
-  const charCount = description.length;
-  if (lineCount > 5 || charCount > 200) {
-    elements.descToggle.hidden = false;
+  // Check if description is HTML (from rich editor) or plain text
+  if (description.includes('<') && description.includes('>')) {
+    elements.detailDesc.innerHTML = description;
+  } else {
+    elements.detailDesc.innerHTML = parseMarkdown(description);
   }
 
   elements.detailMeta.appendChild(renderBadge(translateLabel('priority', task.urgency?.priority || 'none'), task.urgency?.priority));
@@ -1231,6 +1271,54 @@ function openModal(task = null) {
   // 更新领域选项
   updateAreaTagSelector();
 
+  // Setup rich text editor
+  const richContent = form.querySelector('.rich-content');
+  const descInput = form.querySelector('input[name="description"]');
+  if (richContent && descInput) {
+    // Set content
+    richContent.innerHTML = task?.description || '';
+    descInput.value = task?.description || '';
+    
+    // Remove old event listeners by cloning and replacing
+    const newRichContent = richContent.cloneNode(true);
+    richContent.parentNode.replaceChild(newRichContent, richContent);
+    
+    // Sync content to hidden input
+    newRichContent.addEventListener('input', () => {
+      descInput.value = newRichContent.innerHTML;
+    });
+    
+    // Setup toolbar buttons (only once)
+    const toolbar = form.querySelector('.rich-toolbar');
+    if (toolbar && !toolbar.dataset.initialized) {
+      toolbar.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const cmd = btn.dataset.cmd;
+          const value = btn.dataset.value;
+          const content = form.querySelector('.rich-content');
+          const input = form.querySelector('input[name="description"]');
+          
+          if (cmd === 'insertTable') {
+            insertTable(content);
+          } else if (cmd === 'insertCode') {
+            insertCodeBlock(content);
+          } else if (cmd === 'createLink') {
+            const url = prompt('输入链接地址:', 'https://');
+            if (url) {
+              document.execCommand('createLink', false, url);
+            }
+          } else {
+            document.execCommand(cmd, false, value);
+          }
+          content.focus();
+          input.value = content.innerHTML;
+        });
+      });
+      toolbar.dataset.initialized = 'true';
+    }
+  }
+
   // Initialize tag selectors
   const tagSelectors = form.querySelectorAll('.tag-selector');
   tagSelectors.forEach((selector) => {
@@ -1247,7 +1335,6 @@ function openModal(task = null) {
 
   if (task) {
     form.title.value = task.title || '';
-    form.description.value = task.description || '';
     form.progress.value = task.status?.progress ?? 0;
     form.blocked.value = task.resources?.blockedReason || '';
     form.dueDate.value = task.time?.dueDate ? task.time.dueDate.slice(0, 10) : '';
@@ -1271,6 +1358,52 @@ function openModal(task = null) {
     selectTagInSelector(form.querySelector('[data-field="area"]'), 'general');
     selectTagInSelector(form.querySelector('[data-field="phase"]'), 'collect');
   }
+  
+  // Auto focus title input
+  setTimeout(() => {
+    const titleInput = form.querySelector('input[name="title"]');
+    if (titleInput) {
+      titleInput.focus();
+      titleInput.select();
+    }
+  }, 100);
+}
+
+// Helper function to insert table
+function insertTable(editor) {
+  const rows = parseInt(prompt('行数:', '3')) || 3;
+  const cols = parseInt(prompt('列数:', '3')) || 3;
+  
+  let tableHTML = '<table><tbody>';
+  for (let i = 0; i < rows; i++) {
+    tableHTML += '<tr>';
+    for (let j = 0; j < cols; j++) {
+      tableHTML += '<td>单元格</td>';
+    }
+    tableHTML += '</tr>';
+  }
+  tableHTML += '</tbody></table><p><br></p>';
+  
+  document.execCommand('insertHTML', false, tableHTML);
+}
+
+// Helper function to insert code block
+function insertCodeBlock(editor) {
+  const code = prompt('输入代码:', '');
+  if (code !== null) {
+    const codeHTML = '<pre><code>' + escapeHtml(code) + '</code></pre><p><br></p>';
+    document.execCommand('insertHTML', false, codeHTML);
+  }
+}
+
+// Escape HTML for code blocks
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function closeModal() {
@@ -1281,6 +1414,11 @@ function closeModal() {
   tagSelectors.forEach((selector) => {
     selectTagInSelector(selector, getDefaultForField(selector.dataset.field));
   });
+  // Clear rich text editor
+  const richContent = elements.taskForm.querySelector('.rich-content');
+  if (richContent) {
+    richContent.innerHTML = '';
+  }
 }
 
 function getDefaultForField(field) {
@@ -1484,7 +1622,7 @@ function init() {
     const containerRect = elements.taskListPanel.parentElement.getBoundingClientRect();
     const sidebarWidth = 200;
     const resizerWidth = 6;
-    const minDetailWidth = 400;
+    const minDetailWidth = 0;
     const maxListWidth = 800;
     const minListWidth = 300;
     

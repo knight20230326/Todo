@@ -29,9 +29,7 @@
       "src/web/**/*",
       ".omni-plan/**/*"
     ],
-    "outputPath": "dist",
-    "no-byte-code": true,
-    "compress": "GZip"
+    "outputPath": "dist"
   },
   "devDependencies": {
     "pkg": "^5.8.1"
