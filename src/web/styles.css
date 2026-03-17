@@ -729,6 +729,9 @@ a {
   overflow-y: auto;
   padding-right: 8px;
   border-right: 1px solid var(--border);
+  padding-bottom: 40px;
+  /* 可选：增加底部外边距，进一步拉开与容器底部的距离 */
+  margin-bottom: 16px;
 }
 
 .todo-list::-webkit-scrollbar {
