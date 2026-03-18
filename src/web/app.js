@@ -67,7 +67,8 @@ const state = {
   dynamicTabs: [], // 动态标签页配置
   dynamicTabData: {}, // 动态标签页数据 {tabId: [items]}
   selectedDynamicTabItem: null, // 当前选中的动态标签页条目
-  currentDynamicTabId: null // 当前显示的动态标签页ID
+  currentDynamicTabId: null, // 当前显示的动态标签页ID
+  dynamicTabSearch: {} // 动态标签页搜索关键词 {tabId: keyword}
 };
 
 const elements = {
@@ -571,6 +572,8 @@ function render() {
     elements.layout.classList.add('list-view');
     elements.sidebar.style.display = 'none';
     elements.taskDetail.hidden = false;
+    // Hide task search input in dynamic tab views
+    if (elements.search) elements.search.parentElement.style.display = 'none';
     // Refresh the list for the current dynamic tab
     renderDynamicTabList(state.currentView);
     renderDynamicTabDetail(state.currentView);
@@ -578,6 +581,8 @@ function render() {
     elements.taskDetail.hidden = false;
     // Reset right panel title for normal views
     elements.rightPanelTitle.textContent = '任务详情';
+    // Show task search input for normal views
+    if (elements.search) elements.search.parentElement.style.display = '';
   }
 
   renderListView(filtered);
@@ -1929,6 +1934,7 @@ function renderDynamicTabViews() {
     // Only show sidebar (list), detail will be shown in rightpanel
     view.innerHTML = `
       <div class="dynamic-tab-sidebar">
+        <input type="text" class="dynamic-tab-search" id="${tabConfig.id}Search" placeholder="${tabConfig.searchPlaceholder || '搜索...'}" />
         <button class="btn primary new-dynamic-tab-item" data-tab-id="${tabConfig.id}">${tabConfig.newButtonLabel}</button>
         <div class="dynamic-tab-list" id="${tabConfig.id}List"></div>
       </div>
@@ -1941,6 +1947,15 @@ function renderDynamicTabViews() {
     btn.addEventListener('click', (e) => {
       const tabId = e.target.dataset.tabId;
       openDynamicTabModal(tabId);
+    });
+  });
+
+  // Add event listeners for search inputs
+  document.querySelectorAll('.dynamic-tab-search').forEach(input => {
+    input.addEventListener('input', (e) => {
+      const tabId = e.target.id.replace('Search', '');
+      state.dynamicTabSearch[tabId] = e.target.value.trim().toLowerCase();
+      renderDynamicTabList(tabId);
     });
   });
 }
@@ -1961,12 +1976,22 @@ function renderDynamicTabList(tabId) {
   if (!listEl) return;
 
   listEl.innerHTML = '';
-  const items = state.dynamicTabData[tabId] || [];
+  let items = state.dynamicTabData[tabId] || [];
+
+  // Apply search filter
+  const searchKeyword = state.dynamicTabSearch[tabId];
+  if (searchKeyword) {
+    items = items.filter(item => {
+      const titleMatch = (item.title || '').toLowerCase().includes(searchKeyword);
+      const contentMatch = (item.content || '').toLowerCase().includes(searchKeyword);
+      return titleMatch || contentMatch;
+    });
+  }
 
   if (items.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'todo-empty';
-    empty.textContent = tabConfig.emptyMessage;
+    empty.textContent = searchKeyword ? '没有找到匹配的记录' : tabConfig.emptyMessage;
     listEl.appendChild(empty);
     return;
   }
@@ -2038,8 +2063,10 @@ function renderDynamicTabDetail(tabId) {
     if (confirm('确定删除这条记录吗？')) {
       api.deleteDynamicTabItem(tabId, itemId).then(() => {
         state.selectedDynamicTabItem = null;
-        renderDynamicTabDetail(tabId);
-        renderDynamicTabList(tabId);
+        // Reload data from server and re-render
+        loadDynamicTabData(tabId).then(() => {
+          renderDynamicTabDetail(tabId);
+        });
       });
     }
   });

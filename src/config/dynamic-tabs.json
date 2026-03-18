@@ -11,7 +11,8 @@
       "placeholderTitle": "输入经验标题...",
       "placeholderContent": "输入经验内容...",
       "emptyMessage": "暂无经验记录，点击上方按钮添加。",
-      "selectPlaceholder": "点击左侧经验条目查看详情"
+      "selectPlaceholder": "点击左侧经验条目查看详情",
+      "searchPlaceholder": "搜索经验（标题、内容）..."
     },
     {
       "id": "lesson",
@@ -24,7 +25,8 @@
       "placeholderTitle": "输入教训标题...",
       "placeholderContent": "输入教训内容...",
       "emptyMessage": "暂无教训记录，点击上方按钮添加。",
-      "selectPlaceholder": "点击左侧教训条目查看详情"
+      "selectPlaceholder": "点击左侧教训条目查看详情",
+      "searchPlaceholder": "搜索教训（标题、内容）..."
     }
   ]
 }
