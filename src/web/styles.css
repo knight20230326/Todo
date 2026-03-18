@@ -728,10 +728,8 @@ a {
   gap: 8px;
   overflow-y: auto;
   padding-right: 8px;
-  border-right: 1px solid var(--border);
   padding-bottom: 40px;
-  /* 可选：增加底部外边距，进一步拉开与容器底部的距离 */
-  margin-bottom: 16px;
+  border-right: 1px solid var(--border);
 }
 
 .todo-list::-webkit-scrollbar {
@@ -1386,6 +1384,141 @@ a {
 .task-card.completed .badge.completed {
   background: var(--success);
   color: white;
+}
+
+/* Signature */
+.signature {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  max-width: 400px;
+}
+
+.brand-text .signature-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.brand-text .signature-text:hover {
+  background: var(--bg-tertiary);
+  color: var(--text);
+}
+
+.brand-text .signature-input {
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid var(--brand);
+  border-radius: 4px;
+  background: var(--bg-secondary);
+  color: var(--text);
+  outline: none;
+  width: 300px;
+}
+
+/* Dynamic Tabs */
+.dynamic-tab-view {
+  height: 100%;
+  overflow: hidden;
+}
+
+.dynamic-tab-view[hidden] {
+  display: none !important;
+}
+
+.dynamic-tab-view {
+  height: 100%;
+  overflow: hidden;
+}
+
+.dynamic-tab-view[hidden] {
+  display: none !important;
+}
+
+.dynamic-tab-sidebar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-secondary);
+}
+
+.dynamic-tab-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dynamic-tab-item {
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dynamic-tab-item:hover {
+  border-color: var(--brand);
+  background: var(--bg-secondary);
+}
+
+.dynamic-tab-item.selected {
+  border-color: var(--brand);
+  background: var(--brand);
+  color: white;
+}
+
+/* Dynamic Tab Detail in Right Panel */
+.dynamic-tab-detail {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.dynamic-tab-detail h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.dynamic-tab-detail .meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.dynamic-tab-detail .content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  min-height: 150px;
+}
+
+.dynamic-tab-detail .actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 }
 
 /* Summary Table */

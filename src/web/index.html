@@ -12,7 +12,8 @@
       <div class="logo">🧩</div>
       <div class="brand-text">
         <h1>OmniPlan</h1>
-        <p>多维任务管理 · GTD + PARA + 敏捷</p>
+        <p class="signature-text" id="signatureText" title="双击编辑">多维任务管理 · GTD + PARA + 敏捷</p>
+        <input type="text" class="signature-input" id="signatureInput" placeholder="输入签名..." maxlength="50" hidden>
       </div>
     </div>
     <div class="actions">
@@ -32,6 +33,7 @@
     <button class="tab" data-view="habit">习惯打卡</button>
     <button class="tab" data-view="summary">汇总</button>
     <button class="tab" data-view="history">历史</button>
+    <!-- Dynamic tabs will be inserted here -->
   </div>
 
   <main class="layout">
@@ -80,14 +82,16 @@
         <div class="habit" id="habitView" hidden></div>
         <div class="summary" id="summaryView" hidden></div>
         <div class="history" id="historyView" hidden></div>
+        <!-- Dynamic tab views will be inserted here -->
+        <div id="dynamicTabViews"></div>
       </div>
     </section>
 
     <div class="resizer" id="resizer"></div>
 
     <section class="rightpanel" id="taskDetail">
-      <h2>任务详情</h2>
-      <div class="detail">
+      <h2 id="rightPanelTitle">任务详情</h2>
+      <div class="detail" id="taskDetailContent">
         <div><strong id="detailTitle">（选择任务）</strong></div>
         <div class="meta" id="detailMeta"></div>
         <div class="description" id="detailDesc"></div>
@@ -239,6 +243,31 @@
           <div id="areaList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Tab Modal -->
+  <div class="modal" id="dynamicTabModal" hidden>
+    <div class="modal-bg"></div>
+    <div class="modal-card">
+      <header class="modal-header">
+        <h2 id="dynamicTabModalTitle">新建记录</h2>
+        <button id="closeDynamicTabModal" class="btn icon">✕</button>
+      </header>
+      <form id="dynamicTabForm" class="modal-body">
+        <div class="field">
+          <label id="dynamicTabTitleLabel">标题 *</label>
+          <input name="title" id="dynamicTabTitleInput" placeholder="输入标题..." required />
+        </div>
+        <div class="field">
+          <label id="dynamicTabContentLabel">内容 *</label>
+          <textarea name="content" id="dynamicTabContentInput" rows="8" placeholder="输入内容..." required></textarea>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn primary">保存</button>
+          <button type="button" id="cancelDynamicTabBtn" class="btn">取消</button>
+        </div>
+      </form>
     </div>
   </div>
 

@@ -22,6 +22,35 @@ const api = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(order)
+    }).then((r) => r.json()).catch(() => ({ ok: false })),
+  // Signature API
+  getSignature: () => fetch('/api/signature').then((r) => r.json()).catch(() => ({ text: '' })),
+  saveSignature: (text) =>
+    fetch('/api/signature', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    }).then((r) => r.json()).catch(() => ({ ok: false })),
+  // Dynamic Tabs API
+  getDynamicTabsConfig: () => fetch('/api/dynamic-tabs/config').then((r) => r.json()).catch(() => ({ tabs: [] })),
+  getDynamicTabData: (tabId) => fetch(`/api/dynamic-tabs/${tabId}`).then((r) => r.json()).catch(() => []),
+  createDynamicTabItem: (tabId, title, content) =>
+    fetch(`/api/dynamic-tabs/${tabId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, content })
+    }).then((r) => r.json()).catch(() => null),
+  updateDynamicTabItem: (tabId, id, title, content) =>
+    fetch(`/api/dynamic-tabs/${tabId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, title, content })
+    }).then((r) => r.json()).catch(() => null),
+  deleteDynamicTabItem: (tabId, id) =>
+    fetch(`/api/dynamic-tabs/${tabId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
     }).then((r) => r.json()).catch(() => ({ ok: false }))
 };
 
@@ -33,7 +62,12 @@ const state = {
   currentView: 'schedule',
   customOrder: {}, // 自定义排序 {taskId: orderIndex}
   dragState: null, // 当前拖拽状态
-  areaOptions: JSON.parse(localStorage.getItem('areaOptions')) || ['general', 'work', 'life', 'study', 'finance', 'creativity']
+  areaOptions: JSON.parse(localStorage.getItem('areaOptions')) || ['general', 'work', 'life', 'study', 'finance', 'creativity'],
+  signature: '',
+  dynamicTabs: [], // 动态标签页配置
+  dynamicTabData: {}, // 动态标签页数据 {tabId: [items]}
+  selectedDynamicTabItem: null, // 当前选中的动态标签页条目
+  currentDynamicTabId: null // 当前显示的动态标签页ID
 };
 
 const elements = {
@@ -51,6 +85,8 @@ const elements = {
   habitView: document.getElementById('habitView'),
   summaryView: document.getElementById('summaryView'),
   historyView: document.getElementById('historyView'),
+  signatureText: document.getElementById('signatureText'),
+  signatureInput: document.getElementById('signatureInput'),
   viewTabs: Array.from(document.querySelectorAll('.view-tabs .tab')),
   refreshBtn: document.getElementById('refreshBtn'),
   newBtn: document.getElementById('newBtn'),
@@ -62,6 +98,8 @@ const elements = {
   filterPhase: document.getElementById('filterPhase'),
   search: document.getElementById('search'),
   taskDetail: document.getElementById('taskDetail'),
+  rightPanelTitle: document.getElementById('rightPanelTitle'),
+  taskDetailContent: document.getElementById('taskDetailContent'),
   detailTitle: document.getElementById('detailTitle'),
   detailMeta: document.getElementById('detailMeta'),
   detailDesc: document.getElementById('detailDesc'),
@@ -74,13 +112,23 @@ const elements = {
   descToggle: document.getElementById('descToggle'),
   resizer: document.getElementById('resizer'),
   taskListPanel: document.getElementById('taskListPanel'),
-  taskDetail: document.getElementById('taskDetail'),
   areaModal: document.getElementById('areaModal'),
   closeAreaModal: document.getElementById('closeAreaModal'),
   areaModalBody: document.getElementById('areaModalBody'),
   newAreaInput: document.getElementById('newAreaInput'),
   addAreaBtn: document.getElementById('addAreaBtn'),
-  areaList: document.getElementById('areaList')
+  areaList: document.getElementById('areaList'),
+  // Dynamic Tab Elements
+  dynamicTabViews: document.getElementById('dynamicTabViews'),
+  dynamicTabModal: document.getElementById('dynamicTabModal'),
+  dynamicTabModalTitle: document.getElementById('dynamicTabModalTitle'),
+  dynamicTabForm: document.getElementById('dynamicTabForm'),
+  dynamicTabTitleLabel: document.getElementById('dynamicTabTitleLabel'),
+  dynamicTabTitleInput: document.getElementById('dynamicTabTitleInput'),
+  dynamicTabContentLabel: document.getElementById('dynamicTabContentLabel'),
+  dynamicTabContentInput: document.getElementById('dynamicTabContentInput'),
+  closeDynamicTabModal: document.getElementById('closeDynamicTabModal'),
+  cancelDynamicTabBtn: document.getElementById('cancelDynamicTabBtn')
 };
 
 function formatDate(value) {
@@ -508,6 +556,29 @@ function render() {
   elements.habitView.hidden = state.currentView !== 'habit';
   elements.summaryView.hidden = state.currentView !== 'summary';
   elements.historyView.hidden = state.currentView !== 'history';
+
+  // Handle dynamic tab views visibility
+  state.dynamicTabs.forEach((tab) => {
+    const viewEl = document.getElementById(`${tab.id}View`);
+    if (viewEl) {
+      viewEl.hidden = state.currentView !== tab.id;
+    }
+  });
+
+  // Check if current view is a dynamic tab
+  const isDynamicTab = state.dynamicTabs.some(t => t.id === state.currentView);
+  if (isDynamicTab) {
+    elements.layout.classList.add('list-view');
+    elements.sidebar.style.display = 'none';
+    elements.taskDetail.hidden = false;
+    // Refresh the list for the current dynamic tab
+    renderDynamicTabList(state.currentView);
+    renderDynamicTabDetail(state.currentView);
+  } else {
+    elements.taskDetail.hidden = false;
+    // Reset right panel title for normal views
+    elements.rightPanelTitle.textContent = '任务详情';
+  }
 
   renderListView(filtered);
   renderTodoView(filtered);
@@ -1286,18 +1357,24 @@ function selectTask(id) {
 }
 
 function renderDetail() {
+  // Check if current view is a dynamic tab - if so, skip task detail rendering
+  const isDynamicTab = state.dynamicTabs.some(t => t.id === state.currentView);
+  if (isDynamicTab) {
+    return;
+  }
+
   const task = state.selected;
   elements.detailTitle.textContent = task ? (task.title || '(无标题)') : '（选择任务）';
   elements.detailMeta.innerHTML = '';
-  
+
   // Hide toggle button for rich text
   elements.descToggle.hidden = true;
-  
+
   if (!task) {
     elements.detailDesc.innerHTML = '';
     return;
   }
-  
+
   const description = task.description || '（无描述）';
   // Check if description is HTML (from rich editor) or plain text
   if (description.includes('<') && description.includes('>')) {
@@ -1760,6 +1837,294 @@ function init() {
   // 加载自定义排序（支持跨浏览器同步）
   loadCustomOrder().then(() => {
     loadTasks();
+  });
+  
+  // Load signature data
+  loadSignature();
+
+  // Initialize dynamic tabs
+  initDynamicTabs();
+
+  // Signature editing
+  elements.signatureText.addEventListener('dblclick', () => {
+    elements.signatureText.hidden = true;
+    elements.signatureInput.hidden = false;
+    elements.signatureInput.value = state.signature;
+    elements.signatureInput.focus();
+    elements.signatureInput.select();
+  });
+
+  elements.signatureInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const text = elements.signatureInput.value.trim();
+      state.signature = text;
+      elements.signatureText.textContent = text || '多维任务管理 · GTD + PARA + 敏捷';
+      elements.signatureText.hidden = false;
+      elements.signatureInput.hidden = true;
+      api.saveSignature(text);
+    } else if (e.key === 'Escape') {
+      elements.signatureText.hidden = false;
+      elements.signatureInput.hidden = true;
+    }
+  });
+
+  elements.signatureInput.addEventListener('blur', () => {
+    elements.signatureText.hidden = false;
+    elements.signatureInput.hidden = true;
+  });
+}
+
+function loadSignature() {
+  api.getSignature().then((data) => {
+    state.signature = data.text || '';
+    elements.signatureText.textContent = state.signature || '多维任务管理 · GTD + PARA + 敏捷';
+  });
+}
+
+// ==================== Dynamic Tabs Functions ====================
+
+function loadDynamicTabsConfig() {
+  return api.getDynamicTabsConfig().then((config) => {
+    state.dynamicTabs = config.tabs || [];
+    renderDynamicTabs();
+    renderDynamicTabViews();
+    return state.dynamicTabs;
+  });
+}
+
+function renderDynamicTabs() {
+  // Find the history tab to insert after it
+  const historyTab = document.querySelector('.view-tabs .tab[data-view="history"]');
+  if (!historyTab) return;
+
+  // Remove existing dynamic tabs
+  document.querySelectorAll('.view-tabs .tab.dynamic-tab').forEach(tab => tab.remove());
+
+  // Add new dynamic tabs
+  state.dynamicTabs.forEach((tabConfig) => {
+    const tab = document.createElement('button');
+    tab.className = 'tab dynamic-tab';
+    tab.dataset.view = tabConfig.id;
+    tab.textContent = tabConfig.label;
+    tab.addEventListener('click', () => {
+      state.currentView = tabConfig.id;
+      state.currentDynamicTabId = tabConfig.id;
+      render();
+    });
+    historyTab.after(tab);
+  });
+
+  // Update elements.viewTabs
+  elements.viewTabs = Array.from(document.querySelectorAll('.view-tabs .tab'));
+}
+
+function renderDynamicTabViews() {
+  elements.dynamicTabViews.innerHTML = '';
+
+  state.dynamicTabs.forEach((tabConfig) => {
+    const view = document.createElement('div');
+    view.className = `dynamic-tab-view ${tabConfig.id}-view`;
+    view.id = `${tabConfig.id}View`;
+    view.hidden = true;
+    // Only show sidebar (list), detail will be shown in rightpanel
+    view.innerHTML = `
+      <div class="dynamic-tab-sidebar">
+        <button class="btn primary new-dynamic-tab-item" data-tab-id="${tabConfig.id}">${tabConfig.newButtonLabel}</button>
+        <div class="dynamic-tab-list" id="${tabConfig.id}List"></div>
+      </div>
+    `;
+    elements.dynamicTabViews.appendChild(view);
+  });
+
+  // Add event listeners for new buttons
+  document.querySelectorAll('.new-dynamic-tab-item').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const tabId = e.target.dataset.tabId;
+      openDynamicTabModal(tabId);
+    });
+  });
+}
+
+function loadDynamicTabData(tabId) {
+  return api.getDynamicTabData(tabId).then((items) => {
+    state.dynamicTabData[tabId] = items;
+    renderDynamicTabList(tabId);
+    return items;
+  });
+}
+
+function renderDynamicTabList(tabId) {
+  const tabConfig = state.dynamicTabs.find(t => t.id === tabId);
+  if (!tabConfig) return;
+
+  const listEl = document.getElementById(`${tabId}List`);
+  if (!listEl) return;
+
+  listEl.innerHTML = '';
+  const items = state.dynamicTabData[tabId] || [];
+
+  if (items.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'todo-empty';
+    empty.textContent = tabConfig.emptyMessage;
+    listEl.appendChild(empty);
+    return;
+  }
+
+  // Sort by createdAt desc (newest first)
+  const sortedItems = [...items].sort((a, b) =>
+    new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  sortedItems.forEach((item) => {
+    const div = document.createElement('div');
+    div.className = 'dynamic-tab-item';
+    const isSelected = state.selectedDynamicTabItem?.id === item.id && state.currentDynamicTabId === tabId;
+    if (isSelected) {
+      div.classList.add('selected');
+    }
+    div.textContent = item.title || '(无标题)';
+    div.addEventListener('click', () => {
+      state.selectedDynamicTabItem = item;
+      state.currentDynamicTabId = tabId;
+      renderDynamicTabDetail(tabId);
+      renderDynamicTabList(tabId);
+    });
+    listEl.appendChild(div);
+  });
+}
+
+function renderDynamicTabDetail(tabId) {
+  const tabConfig = state.dynamicTabs.find(t => t.id === tabId);
+  if (!tabConfig) return;
+
+  // Update right panel title
+  elements.rightPanelTitle.textContent = tabConfig.label + '详情';
+
+  // Show task detail content but clear it for dynamic tab content
+  elements.taskDetailContent.innerHTML = '';
+
+  if (!state.selectedDynamicTabItem || state.currentDynamicTabId !== tabId) {
+    elements.taskDetailContent.innerHTML = `<p class="placeholder">${tabConfig.selectPlaceholder}</p>`;
+    return;
+  }
+
+  const item = state.selectedDynamicTabItem;
+  elements.taskDetailContent.innerHTML = `
+    <div class="dynamic-tab-detail">
+      <h3>${escapeHtml(item.title || '(无标题)')}</h3>
+      <div class="meta">创建于: ${formatDate(item.createdAt)}</div>
+      <div class="content">${parseMarkdown(item.content || '')}</div>
+      <div class="actions">
+        <button class="btn edit-dynamic-tab-item" data-tab-id="${tabId}" data-item-id="${item.id}">✏️ 编辑</button>
+        <button class="btn danger delete-dynamic-tab-item" data-tab-id="${tabId}" data-item-id="${item.id}">🗑️ 删除</button>
+      </div>
+    </div>
+  `;
+
+  // Add event listeners
+  elements.taskDetailContent.querySelector('.edit-dynamic-tab-item').addEventListener('click', (e) => {
+    const tabId = e.target.dataset.tabId;
+    const itemId = e.target.dataset.itemId;
+    const item = state.dynamicTabData[tabId]?.find(i => i.id === itemId);
+    if (item) {
+      openDynamicTabModal(tabId, item);
+    }
+  });
+
+  elements.taskDetailContent.querySelector('.delete-dynamic-tab-item').addEventListener('click', (e) => {
+    const tabId = e.target.dataset.tabId;
+    const itemId = e.target.dataset.itemId;
+    if (confirm('确定删除这条记录吗？')) {
+      api.deleteDynamicTabItem(tabId, itemId).then(() => {
+        state.selectedDynamicTabItem = null;
+        renderDynamicTabDetail(tabId);
+        renderDynamicTabList(tabId);
+      });
+    }
+  });
+}
+
+function openDynamicTabModal(tabId, item = null) {
+  const tabConfig = state.dynamicTabs.find(t => t.id === tabId);
+  if (!tabConfig) return;
+
+  state.currentDynamicTabId = tabId;
+  elements.dynamicTabModalTitle.textContent = item ? `编辑${tabConfig.label}` : tabConfig.modalTitle;
+  elements.dynamicTabTitleLabel.textContent = tabConfig.titleLabel + ' *';
+  elements.dynamicTabTitleInput.placeholder = tabConfig.placeholderTitle;
+  elements.dynamicTabContentLabel.textContent = tabConfig.contentLabel + ' *';
+  elements.dynamicTabContentInput.placeholder = tabConfig.placeholderContent;
+
+  if (item) {
+    elements.dynamicTabTitleInput.value = item.title || '';
+    elements.dynamicTabContentInput.value = item.content || '';
+    elements.dynamicTabForm.dataset.itemId = item.id;
+  } else {
+    elements.dynamicTabForm.reset();
+    elements.dynamicTabForm.dataset.itemId = '';
+  }
+
+  elements.dynamicTabModal.hidden = false;
+  elements.dynamicTabTitleInput.focus();
+}
+
+function closeDynamicTabModal() {
+  elements.dynamicTabModal.hidden = true;
+  elements.dynamicTabForm.reset();
+  elements.dynamicTabForm.dataset.itemId = '';
+}
+
+function initDynamicTabs() {
+  // Load config and data
+  loadDynamicTabsConfig().then(() => {
+    state.dynamicTabs.forEach(tab => {
+      loadDynamicTabData(tab.id);
+    });
+  });
+
+  // Modal event listeners
+  elements.closeDynamicTabModal.addEventListener('click', closeDynamicTabModal);
+  elements.cancelDynamicTabBtn.addEventListener('click', closeDynamicTabModal);
+  elements.dynamicTabModal.querySelector('.modal-bg').addEventListener('click', closeDynamicTabModal);
+
+  // Form submit
+  elements.dynamicTabForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const tabId = state.currentDynamicTabId;
+    if (!tabId) return;
+
+    const title = elements.dynamicTabTitleInput.value.trim();
+    const content = elements.dynamicTabContentInput.value.trim();
+    const itemId = elements.dynamicTabForm.dataset.itemId;
+
+    if (!title || !content) return;
+
+    if (itemId) {
+      // Update existing
+      api.updateDynamicTabItem(tabId, itemId, title, content).then(() => {
+        closeDynamicTabModal();
+        loadDynamicTabData(tabId).then(() => {
+          // Update selected item if it was the one edited
+          if (state.selectedDynamicTabItem?.id === itemId) {
+            state.selectedDynamicTabItem = state.dynamicTabData[tabId]?.find(i => i.id === itemId);
+            renderDynamicTabDetail(tabId);
+          }
+        });
+      });
+    } else {
+      // Create new
+      api.createDynamicTabItem(tabId, title, content).then((newItem) => {
+        closeDynamicTabModal();
+        loadDynamicTabData(tabId).then(() => {
+          // Select the new item
+          state.selectedDynamicTabItem = newItem;
+          state.currentDynamicTabId = tabId;
+          renderDynamicTabDetail(tabId);
+          renderDynamicTabList(tabId);
+        });
+      });
+    }
   });
 }
 

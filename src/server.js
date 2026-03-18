@@ -2,7 +2,12 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { Task } = require('./models/task');
-const { readAll, writeAll, getDataPath, readOrder, writeOrder } = require('./store');
+const { 
+  readAll, writeAll, getDataPath, 
+  readOrder, writeOrder,
+  readSignature, writeSignature,
+  getDynamicTabsConfig, readDynamicTabData, writeDynamicTabData
+} = require('./store');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -81,6 +86,98 @@ function handleApi(req, res) {
       })
       .catch(() => sendJSON(res, { error: 'invalid json body' }, 400));
     return;
+  }
+
+  // Signature API
+  if (pathname === '/api/signature' && req.method === 'GET') {
+    const text = readSignature();
+    sendJSON(res, { text });
+    return;
+  }
+
+  if (pathname === '/api/signature' && req.method === 'POST') {
+    parseJSON(req)
+      .then((payload) => {
+        writeSignature(payload.text);
+        sendJSON(res, { ok: true });
+      })
+      .catch(() => sendJSON(res, { error: 'invalid json body' }, 400));
+    return;
+  }
+
+  // Dynamic Tabs Config API
+  if (pathname === '/api/dynamic-tabs/config' && req.method === 'GET') {
+    const config = getDynamicTabsConfig();
+    sendJSON(res, config);
+    return;
+  }
+
+  // Dynamic Tabs Data API
+  const dynamicTabMatch = pathname.match(/^\/api\/dynamic-tabs\/([^\/]+)$/);
+  if (dynamicTabMatch) {
+    const tabId = dynamicTabMatch[1];
+    const config = getDynamicTabsConfig();
+    const tabConfig = config.tabs.find(t => t.id === tabId);
+    
+    if (!tabConfig) {
+      sendJSON(res, { error: 'tab not found' }, 404);
+      return;
+    }
+
+    if (req.method === 'GET') {
+      const items = readDynamicTabData(tabConfig.dataFile);
+      sendJSON(res, items);
+      return;
+    }
+
+    if (req.method === 'POST') {
+      parseJSON(req)
+        .then((payload) => {
+          const items = readDynamicTabData(tabConfig.dataFile);
+          const newItem = {
+            id: Date.now().toString(),
+            title: payload.title,
+            content: payload.content,
+            createdAt: new Date().toISOString()
+          };
+          items.push(newItem);
+          writeDynamicTabData(tabConfig.dataFile, items);
+          sendJSON(res, newItem, 201);
+        })
+        .catch(() => sendJSON(res, { error: 'invalid json body' }, 400));
+      return;
+    }
+
+    if (req.method === 'PUT') {
+      parseJSON(req)
+        .then((payload) => {
+          const items = readDynamicTabData(tabConfig.dataFile);
+          const idx = items.findIndex(i => i.id === payload.id);
+          if (idx !== -1) {
+            items[idx].title = payload.title;
+            items[idx].content = payload.content;
+            items[idx].updatedAt = new Date().toISOString();
+            writeDynamicTabData(tabConfig.dataFile, items);
+            sendJSON(res, items[idx]);
+          } else {
+            sendJSON(res, { error: 'not found' }, 404);
+          }
+        })
+        .catch(() => sendJSON(res, { error: 'invalid json body' }, 400));
+      return;
+    }
+
+    if (req.method === 'DELETE') {
+      parseJSON(req)
+        .then((payload) => {
+          const items = readDynamicTabData(tabConfig.dataFile);
+          const filtered = items.filter(i => i.id !== payload.id);
+          writeDynamicTabData(tabConfig.dataFile, filtered);
+          sendJSON(res, { ok: true });
+        })
+        .catch(() => sendJSON(res, { error: 'invalid json body' }, 400));
+      return;
+    }
   }
 
   if (pathname === '/api/tasks' && req.method === 'POST') {
