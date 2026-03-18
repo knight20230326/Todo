@@ -7,13 +7,33 @@ const SIGNATURE_FILENAME = 'signature.json';
 const DYNAMIC_TABS_CONFIG = 'dynamic-tabs.json';
 
 function getDynamicTabsConfig() {
-  const configPath = path.join(__dirname, 'config', DYNAMIC_TABS_CONFIG);
-  try {
-    const raw = fs.readFileSync(configPath, 'utf-8');
-    return JSON.parse(raw);
-  } catch (e) {
-    return { tabs: [] };
+  // Try multiple locations for the config file
+  const possiblePaths = [
+    // 1. Environment variable override
+    process.env.OMNIPLAN_TABS_CONFIG ? path.resolve(process.env.OMNIPLAN_TABS_CONFIG) : null,
+    // 2. Current working directory (for bin builds)
+    path.join(process.cwd(), 'config', DYNAMIC_TABS_CONFIG),
+    // 3. Source directory (for dev)
+    path.join(__dirname, 'config', DYNAMIC_TABS_CONFIG),
+    // 4. Parent of source directory
+    path.join(__dirname, '..', 'config', DYNAMIC_TABS_CONFIG),
+    // 5. Executable directory (for pkg builds)
+    path.join(path.dirname(process.execPath), 'config', DYNAMIC_TABS_CONFIG)
+  ].filter(Boolean);
+
+  for (const configPath of possiblePaths) {
+    try {
+      if (fs.existsSync(configPath)) {
+        const raw = fs.readFileSync(configPath, 'utf-8');
+        return JSON.parse(raw);
+      }
+    } catch (e) {
+      // Continue to next path
+    }
   }
+
+  // Return empty config if no file found
+  return { tabs: [] };
 }
 
 function getDynamicTabDataPath(dataFile) {

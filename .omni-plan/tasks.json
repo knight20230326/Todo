@@ -401,16 +401,16 @@
   {
     "id": "5792461f-d71b-4f53-9621-c74299824487",
     "title": "每日站会",
-    "description": "每天上午10点的站会",
+    "description": "每天上午10点的站会<div><br></div><div>TODO: 下一步</div>",
     "createdAt": "2026-03-13T04:29:35.433Z",
-    "updatedAt": "2026-03-13T08:11:12.740Z",
+    "updatedAt": "2026-03-16T07:48:56.804Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2026-03-15T00:00:00.000Z",
+      "dueDate": "2026-03-15",
       "reminder": null,
       "recurrence": "daily",
       "condition": null,
@@ -445,9 +445,9 @@
   {
     "id": "2ca404f1-0712-4597-819a-3103178f3ad4",
     "title": "周报汇总",
-    "description": "每周五下午5点汇总本周工作",
+    "description": "每周五下午5点汇总本周工作<div><br></div><div>&nbsp;TODO&nbsp; 任务</div>",
     "createdAt": "2026-03-13T04:29:35.435Z",
-    "updatedAt": "2026-03-13T04:29:35.435Z",
+    "updatedAt": "2026-03-16T07:53:15.659Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -491,7 +491,7 @@
     "title": "晨间跑步",
     "description": "每天早上跑步锻炼",
     "createdAt": "2026-03-13T04:29:35.437Z",
-    "updatedAt": "2026-03-13T05:42:54.848Z",
+    "updatedAt": "2026-03-13T11:10:34.354Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -579,16 +579,16 @@
   {
     "id": "2df9cb89-6dc3-48fe-85ca-ebc845767883",
     "title": "Daily Standup Meeting",
-    "description": "Morning standup",
+    "description": "Morning standup<div><table><tbody><tr><td>测试</td><td>测试</td><td>单元格</td></tr><tr><td>单元格</td><td>单元格</td><td>单元格</td></tr><tr><td>单元格</td><td>单元格</td><td>单元格<br><br><br></td></tr></tbody></table><p><br></p><p>nihao&nbsp; &nbsp;todo&nbsp;</p><p><br></p><p><br></p><p>&nbsp; &nbsp; TODO11111&nbsp; &nbsp;3333</p><p><br></p><p><br></p><p>TODO 测试2</p></div>",
     "createdAt": "2026-03-13T05:43:23.497Z",
-    "updatedAt": "2026-03-13T05:43:23.516Z",
+    "updatedAt": "2026-03-16T08:08:54.219Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2026-03-14",
+      "dueDate": "2026-03-16",
       "reminder": null,
       "recurrence": "daily",
       "condition": null,
@@ -625,14 +625,14 @@
     "title": "Weekly Report",
     "description": "Submit weekly report",
     "createdAt": "2026-03-13T05:43:23.500Z",
-    "updatedAt": "2026-03-13T05:43:23.500Z",
+    "updatedAt": "2026-03-13T11:41:29.655Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2025-01-17",
+      "dueDate": "2025-01-31T00:00:00.000Z",
       "reminder": null,
       "recurrence": "weekly",
       "condition": null,
@@ -650,8 +650,8 @@
       ]
     },
     "status": {
-      "phase": "do",
-      "progress": 0
+      "phase": "archive",
+      "progress": 100
     },
     "resources": {
       "budget": null,
@@ -669,7 +669,7 @@
     "title": "Morning Jog",
     "description": "30 min run in the morning",
     "createdAt": "2026-03-13T05:43:23.502Z",
-    "updatedAt": "2026-03-13T08:11:00.348Z",
+    "updatedAt": "2026-03-13T11:10:20.064Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -714,7 +714,7 @@
     "title": "Waiting for Design Review",
     "description": "Need design team approval",
     "createdAt": "2026-03-13T05:43:23.505Z",
-    "updatedAt": "2026-03-13T05:43:23.505Z",
+    "updatedAt": "2026-03-13T11:10:17.435Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -740,8 +740,8 @@
       ]
     },
     "status": {
-      "phase": "wait",
-      "progress": 0
+      "phase": "archive",
+      "progress": 100
     },
     "resources": {
       "budget": null,
@@ -844,16 +844,16 @@
   {
     "id": "2ab89a29-b253-4950-a5e4-8e9180f8f7d8",
     "title": "Daily Standup Meeting",
-    "description": "Morning standup",
+    "description": "Morning standup\nMorning standup\n\nMorning standup\n\n\n\nMorning standup\n\n\nMorning standup\n\n\n\nMorning standup",
     "createdAt": "2026-03-13T06:13:54.914Z",
-    "updatedAt": "2026-03-13T08:11:29.200Z",
+    "updatedAt": "2026-03-16T02:26:03.343Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
     "expanded": true,
     "time": {
       "type": "recurring",
-      "dueDate": "2026-03-16T00:00:00.000Z",
+      "dueDate": "2026-03-16",
       "reminder": null,
       "recurrence": "daily",
       "condition": null,
@@ -873,95 +873,6 @@
     "status": {
       "phase": "do",
       "progress": 0
-    },
-    "resources": {
-      "budget": null,
-      "checklist": [],
-      "blockedReason": null
-    },
-    "content": {
-      "draftMode": "outline",
-      "wordTarget": null,
-      "assets": []
-    }
-  },
-  {
-    "id": "bd457929-23bd-442b-bb6f-231e02672d22",
-    "title": "Weekly Report",
-    "description": "Submit weekly report",
-    "createdAt": "2026-03-13T06:13:54.917Z",
-    "updatedAt": "2026-03-13T08:11:06.052Z",
-    "parentId": null,
-    "childrenIds": [],
-    "depth": 0,
-    "expanded": true,
-    "time": {
-      "type": "recurring",
-      "dueDate": "2025-01-24T00:00:00.000Z",
-      "reminder": null,
-      "recurrence": "weekly",
-      "condition": null,
-      "habitWindow": null,
-      "lastDone": null
-    },
-    "urgency": {
-      "priority": "medium",
-      "energy": "medium"
-    },
-    "category": {
-      "area": "work",
-      "tags": [
-        "report"
-      ]
-    },
-    "status": {
-      "phase": "do",
-      "progress": 0
-    },
-    "resources": {
-      "budget": null,
-      "checklist": [],
-      "blockedReason": null
-    },
-    "content": {
-      "draftMode": "outline",
-      "wordTarget": null,
-      "assets": []
-    }
-  },
-  {
-    "id": "f978be2b-9ab4-4253-92a8-6bb4779b5ae7",
-    "title": "Morning Jog",
-    "description": "30 min run in the morning",
-    "createdAt": "2026-03-13T06:13:54.920Z",
-    "updatedAt": "2026-03-13T07:55:13.054Z",
-    "parentId": null,
-    "childrenIds": [],
-    "depth": 0,
-    "expanded": true,
-    "time": {
-      "type": "habit",
-      "dueDate": "2025-01-17",
-      "reminder": null,
-      "recurrence": "weekly",
-      "condition": null,
-      "habitWindow": "06:00-07:00",
-      "lastDone": "2026-03-13"
-    },
-    "urgency": {
-      "priority": "medium",
-      "energy": "medium"
-    },
-    "category": {
-      "area": "life",
-      "tags": [
-        "fitness",
-        "habit"
-      ]
-    },
-    "status": {
-      "phase": "do",
-      "progress": 1
     },
     "resources": {
       "budget": null,
@@ -1152,9 +1063,9 @@
   {
     "id": "90e85182-33f5-4f2d-a949-d7b312a9eb07",
     "title": "采购",
-    "description": "TODO 111111111111111111<div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div><div><br></div><div>TODO 111111111111111111</div>",
+    "description": "",
     "createdAt": "2026-03-13T09:03:05.069Z",
-    "updatedAt": "2026-03-17T09:45:32.920Z",
+    "updatedAt": "2026-03-13T11:09:42.135Z",
     "parentId": null,
     "childrenIds": [],
     "depth": 0,
@@ -1177,7 +1088,91 @@
       "tags": []
     },
     "status": {
-      "phase": "do",
+      "phase": "archive",
+      "progress": 100
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "f5e599e7-4c77-45ec-b608-e5eb667bd840",
+    "title": "测试",
+    "description": "<table><tbody><tr><td>单元格</td><td>单元格</td><td>单元格</td></tr><tr><td>单元格</td><td>单元格</td><td>单元格</td></tr><tr><td>单元格</td><td>单元格</td><td>单元格</td></tr></tbody></table><p><br></p>",
+    "createdAt": "2026-03-16T02:33:14.452Z",
+    "updatedAt": "2026-03-16T02:33:14.452Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": null,
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "none",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "general",
+      "tags": []
+    },
+    "status": {
+      "phase": "collect",
+      "progress": 0
+    },
+    "resources": {
+      "budget": null,
+      "checklist": [],
+      "blockedReason": null
+    },
+    "content": {
+      "draftMode": "outline",
+      "wordTarget": null,
+      "assets": []
+    }
+  },
+  {
+    "id": "8abc83a9-1e2a-4055-a39b-79d65ad9d060",
+    "title": "测试2",
+    "description": "<ul><li>1</li><li>1</li></ul><div><br></div><div><br></div>",
+    "createdAt": "2026-03-16T02:33:37.802Z",
+    "updatedAt": "2026-03-16T02:33:37.802Z",
+    "parentId": null,
+    "childrenIds": [],
+    "depth": 0,
+    "expanded": true,
+    "time": {
+      "type": "single",
+      "dueDate": null,
+      "reminder": null,
+      "recurrence": null,
+      "condition": null,
+      "habitWindow": null,
+      "lastDone": null
+    },
+    "urgency": {
+      "priority": "none",
+      "energy": "medium"
+    },
+    "category": {
+      "area": "general",
+      "tags": []
+    },
+    "status": {
+      "phase": "collect",
       "progress": 0
     },
     "resources": {
